@@ -4,6 +4,10 @@ import java.time.Duration;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
+/**
+ * @author hakdogan (hakdogan75@gmail.com)
+ * Created on 30.07.2023
+ ***/
 public class PlatformThreadPerTask
 {
     public static void main(String[] args) {
