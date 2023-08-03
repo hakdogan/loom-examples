@@ -44,6 +44,8 @@
                         <arg>20</arg>
                         <arg>--add-modules</arg>
                         <arg>jdk.incubator.concurrent</arg>
+                        <arg>--add-exports</arg>
+                        <arg>java.base/jdk.internal.vm=ALL-UNNAMED</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
