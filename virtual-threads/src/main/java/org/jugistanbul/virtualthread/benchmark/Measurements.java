@@ -14,15 +14,16 @@ import java.util.stream.IntStream;
 public class Measurements
 {
 
-    private static ExecutorService platformThreadExecutor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-    private static ExecutorService virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
-
     public static void main(String[] args) {
-        taskSubmit(platformThreadExecutor, Instant.now());
-        taskSubmit(virtualThreadExecutor, Instant.now());
+
+        var platformThreadExecutor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        var virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
+
+        executeTasksOnGivenExecutor(platformThreadExecutor, Instant.now());
+        executeTasksOnGivenExecutor(virtualThreadExecutor, Instant.now());
     }
 
-    private static void taskSubmit(final ExecutorService executor, final Instant startTime){
+    private static void executeTasksOnGivenExecutor(final ExecutorService executor, final Instant startTime){
 
         IntStream.range(0, 1000)
                 .mapToObj(i -> {
