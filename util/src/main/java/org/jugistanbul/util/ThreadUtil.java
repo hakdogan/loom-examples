@@ -55,4 +55,15 @@ public class ThreadUtil
         var endTime = Instant.now();
         return Duration.between(startTime, endTime).toMillis();
     }
+
+    public static void shutdownAndAwaitTermination(final ExecutorService executor,
+                                                   final TimeUnit timeUnit){
+        executor.shutdown();
+
+        try {
+            executor.awaitTermination(1, timeUnit);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 }
