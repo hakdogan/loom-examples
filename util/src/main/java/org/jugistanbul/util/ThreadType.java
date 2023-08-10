@@ -6,5 +6,14 @@ package org.jugistanbul.util;
  ***/
 public enum ThreadType
 {
-    PLATFORM, VIRTUAL
+    PLATFORM("Platform Threads"), VIRTUAL("Virtual Threads");
+    private String desc;
+
+    ThreadType(String desc) {
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }
