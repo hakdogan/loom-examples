@@ -1,5 +1,6 @@
 package org.jugistanbul.virtualthread.benchmark;
 
+import org.jugistanbul.util.ThreadType;
 import org.jugistanbul.util.ThreadUtil;
 
 import java.time.Instant;
@@ -19,12 +20,13 @@ public class Measurements
         var platformThreadExecutor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         var virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
 
-        executeTasksOnGivenExecutor(platformThreadExecutor, Instant.now());
-        executeTasksOnGivenExecutor(virtualThreadExecutor, Instant.now());
+        executeTasksOnGivenExecutor(platformThreadExecutor, ThreadType.PLATFORM);
+        executeTasksOnGivenExecutor(virtualThreadExecutor, ThreadType.VIRTUAL);
     }
 
-    private static void executeTasksOnGivenExecutor(final ExecutorService executor, final Instant startTime){
+    private static void executeTasksOnGivenExecutor(final ExecutorService executor, final ThreadType type){
 
+        var startTime = Instant.now();
         IntStream.range(0, 1000)
                 .mapToObj(i -> {
                     Runnable runnable = () -> ThreadUtil.sleepOfMillis(50);
@@ -32,6 +34,6 @@ public class Measurements
                 }).map(executor::submit).toList();
 
         ThreadUtil.wait(executor);
-        System.out.println(String.format("Completion time %s ms", ThreadUtil.benchmark(startTime)));
+        System.out.println(String.format("Completion time of %s %s ms", type.getDesc(), ThreadUtil.benchmark(startTime)));
     }
 }
