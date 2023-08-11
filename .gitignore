@@ -2,6 +2,7 @@
 *.war
 *.jar
 *.class
+*.jfr
 .DS_Store
 .idea/
 src/test/
