@@ -16,15 +16,14 @@ public class Factory
 {
     public static void main(String[] args) {
 
-        Runnable runnable = () -> System.out.println("Hello world!");
         var virtualThreadFactory = Thread.ofVirtual().factory();
         var platformThreadFactory = Thread.ofPlatform().factory();
 
         runWithExecutor(virtualThreadFactory);
         runWithExecutor(platformThreadFactory);
 
-        var virtualThread = virtualThreadFactory.newThread(runnable);
-        var platformThread = platformThreadFactory.newThread(runnable);
+        var virtualThread = virtualThreadFactory.newThread(Factory::sayHello);
+        var platformThread = platformThreadFactory.newThread(Factory::sayHello);
 
         virtualThread.start();
         platformThread.start();
@@ -42,5 +41,9 @@ public class Factory
                         return i;
                     }));
         }
+    }
+
+    private static void sayHello(){
+        System.out.println("Hello world!");
     }
 }
