@@ -49,12 +49,11 @@ public class NativeMemoryTracking
         try {
 
             Process proc = rt.exec(commands);
-
-            var inputStream = proc.getInputStream();
-            inputStream.transferTo(System.out);
-
-            var errStream = proc.getErrorStream();
-            errStream.transferTo(System.out);
+            try(var inputStream = proc.getInputStream();
+                var errStream = proc.getErrorStream()){
+                inputStream.transferTo(System.out);
+                errStream.transferTo(System.out);
+            }
 
         } catch (Exception e){
             throw new  RuntimeException(e);
