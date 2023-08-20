@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
  ***/
 public class ThreadUtil
 {
+    private ThreadUtil(){}
+
     public static void sleepOfSeconds(long duration){
         try {
             Thread.sleep(Duration.ofSeconds(duration));
