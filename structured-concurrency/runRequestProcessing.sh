@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#make sure the YieldExecution class is compiled before running this script
+#make sure the util and structured-concurrency modules are compiled before running this script
 
 java -cp ../util/target/classes/:./target/classes/ \
 --add-modules jdk.incubator.concurrent \
