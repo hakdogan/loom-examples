@@ -31,7 +31,7 @@ public class Server
                     Future<Integer> order = scope.fork(() -> fetchRequestCount());
 
                     scope.join().throwIfFailed();
-                    System.out.println(String.format("%sRequest count: %d%N", content.get(), order.get()));
+                    System.out.println(String.format("%sRequest count: %d%n", content.get(), order.get()));
                     if(REQUEST_COUNT.get() == MAX_REQUEST){
                         Thread.currentThread().interrupt();
                     }
