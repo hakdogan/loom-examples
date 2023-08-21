@@ -14,6 +14,8 @@ public class Server
 {
 
     private static final AtomicInteger REQUEST_COUNT = new AtomicInteger();
+    private static final int MAX_REQUEST = 5;
+
     private Server(){}
 
     public static void run() {
@@ -29,8 +31,8 @@ public class Server
                     Future<Integer> order = scope.fork(() -> fetchRequestCount());
 
                     scope.join().throwIfFailed();
-                    System.out.println(String.format("%sRequest count: %d", content.get(), order.get()));
-                    if(REQUEST_COUNT.get() > 1){
+                    System.out.println(String.format("%sRequest count: %d%N", content.get(), order.get()));
+                    if(REQUEST_COUNT.get() == MAX_REQUEST){
                         Thread.currentThread().interrupt();
                     }
                 }
