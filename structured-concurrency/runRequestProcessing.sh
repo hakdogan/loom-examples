@@ -9,5 +9,5 @@ java -cp ../util/target/classes/:./target/classes/ \
 org.jugistanbul.structuredconcurrency.RequestProcessing &
 for i in 1 2 3 4 5
 do
-   curl -s -o -GET localhost:8080
+   curl -GET localhost:8080
 done
