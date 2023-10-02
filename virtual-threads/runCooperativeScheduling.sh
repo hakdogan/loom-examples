@@ -2,7 +2,7 @@
 
 #make sure the util module is compiled before running this script
 
-java -cp ../util/target/classes/ --enable-preview --source=20 \
+java -cp ../util/target/classes/ \
 -Djdk.virtualThreadScheduler.parallelism=1 \
 -Djdk.virtualThreadScheduler.maxPoolSize=1 \
 -Djdk.virtualThreadScheduler.minRunnable=1 \

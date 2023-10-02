@@ -240,8 +240,9 @@ In addition to existing ones, there are several new runtime parameters and event
 [This example](https://github.com/hakdogan/loom-examples/blob/main/virtual-threads/src/main/java/org/jugistanbul/virtualthread/monitor/MonitoringPinningEvent.java)  shows how to monitor the `pinning event` using `jdk.tracePinnedThreads` flag.
 
 ```shell
-java -cp ../util/target/classes/ --enable-preview --source=20 \
--Djdk.tracePinnedThreads=short src/main/java/org/jugistanbul/virtualthread/monitor/MonitoringPinningEvent.java
+java -cp ../util/target/classes/ \
+-Djdk.tracePinnedThreads=short \
+src/main/java/org/jugistanbul/virtualthread/monitor/MonitoringPinningEvent.java
 ```
 </details>
 
@@ -284,7 +285,7 @@ java -cp ../util/target/classes/ --enable-preview --source=20 \
 - jdk.virtualThreadScheduler.minRunnable
 
 ```shell
-java -cp ../util/target/classes/ --enable-preview --source=20 \
+java -cp ../util/target/classes/ \
 -Djdk.virtualThreadScheduler.parallelism=1 \
 -Djdk.virtualThreadScheduler.maxPoolSize=1 \
 -Djdk.virtualThreadScheduler.minRunnable=1 \

@@ -2,11 +2,10 @@
 
 #make sure the util and structured-concurrency modules are compiled before running this script
 
-java -cp ../util/target/classes/:./target/classes/ \
---add-modules jdk.incubator.concurrent \
---add-exports java.base/jdk.internal.vm=ALL-UNNAMED \
+java -cp ../util/target/classes/:./target/classes \
 --enable-preview \
-org.jugistanbul.structuredconcurrency.RequestProcessing &
+--source=21 \
+src/main/java/org/jugistanbul/structuredconcurrency/RequestProcessing.java &
 for i in 1 2 3 4 5
 do
    curl -GET localhost:8080

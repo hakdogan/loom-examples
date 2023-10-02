@@ -1,13 +1,13 @@
 package org.jugistanbul.structuredconcurrency;
 
-import jdk.incubator.concurrent.StructuredTaskScope;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.StructuredTaskScope;
 import java.util.concurrent.ThreadLocalRandom;
+import static java.util.concurrent.StructuredTaskScope.Subtask;
+
 
 /**
  * @author hakdogan (hakdogan75@gmail.com)
@@ -26,8 +26,8 @@ public class RequestHandler
 
         try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
 
-            Future<String> username  = scope.fork(this::fetchUserName);
-            Future<Integer> userIdentity = scope.fork(this::fetchUserIdentity);
+            Subtask<String> username  = scope.fork(this::fetchUserName);
+            Subtask<Integer> userIdentity = scope.fork(this::fetchUserIdentity);
 
             scope.join().throwIfFailed();
             createResponse(username.get(), userIdentity.get());
