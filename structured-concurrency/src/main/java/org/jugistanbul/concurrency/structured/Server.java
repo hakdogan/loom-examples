@@ -1,4 +1,4 @@
-package org.jugistanbul.structuredconcurrency;
+package org.jugistanbul.concurrency.structured;
 
 import java.net.ServerSocket;
 import java.util.concurrent.atomic.AtomicInteger;

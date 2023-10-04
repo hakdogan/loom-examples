@@ -1,4 +1,4 @@
-package org.jugistanbul.structuredconcurrency;
+package org.jugistanbul.concurrency.structured;
 
 import org.jugistanbul.util.ThreadUtil;
 
