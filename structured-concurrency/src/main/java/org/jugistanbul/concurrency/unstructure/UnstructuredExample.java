@@ -30,7 +30,6 @@ public class UnstructuredExample
     }
 
     private static BigDecimal fetchEuroExchangeRate() {
-
         System.out.println("The remote service call will be performed to fetch the Euro exchange rate.");
         ErrorSimulator.throwRandomly(10, 10_000);
         return BigDecimal.valueOf(28.94);

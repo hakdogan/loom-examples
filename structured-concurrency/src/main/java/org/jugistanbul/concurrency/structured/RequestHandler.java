@@ -1,4 +1,6 @@
-package org.jugistanbul.structuredconcurrency;
+package org.jugistanbul.concurrency.structured;
+
+import org.jugistanbul.ErrorSimulator;
 
 import java.io.*;
 import java.net.Socket;
@@ -40,8 +42,11 @@ public class RequestHandler
     }
 
     private String fetchUserName(){
-        String[] nicknames = {"hakdogan", "jugistanbul", "JakartaOneTUR"};
 
+        ErrorSimulator.throwRandomly(10, 70_000);
+        System.out.println("The remote service call will be performed to fetch a username randomly");
+
+        String[] nicknames = {"hakdogan", "jugistanbul", "JakartaOneTUR"};
         Random random = new Random();
         int randomIndex = random.nextInt(nicknames.length);
 
@@ -49,6 +54,8 @@ public class RequestHandler
     }
 
     private Integer fetchUserIdentity(){
+        ErrorSimulator.throwRandomly(100, 95_000);
+        System.out.println("The remote service call will be performed to fetch the user identity");
         return ThreadLocalRandom.current().nextInt(100, 100_000);
     }
 
