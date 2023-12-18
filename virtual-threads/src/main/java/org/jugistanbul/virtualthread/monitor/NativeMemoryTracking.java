@@ -18,8 +18,9 @@ public class NativeMemoryTracking
         ProcessHandle processHandle = ProcessHandle.current();
         var pid = processHandle.pid();
 
-        var threadCount = defineThreadCount(args);
-        var threadType  = defineThreadType(args);
+        var threadCount = defineThreadCount(args[0]);
+        var threadType  = defineThreadType(args[1]);
+        var jcmd        = args.length < 3 ? false : defineUsedJcmd(args[2]);
         var printTime   = threadCount - 1;
 
         System.out.println("Thread count set to " + threadCount);
@@ -28,7 +29,7 @@ public class NativeMemoryTracking
 
             IntStream.range(0, threadCount).forEach(i -> {
 
-                if(i == printTime){
+                if(jcmd && i == printTime){
                     memoryTracking(pid, threadType);
                 }
 
@@ -60,9 +61,10 @@ public class NativeMemoryTracking
         }
     }
 
-    private static ThreadType defineThreadType(final String[] args){
-        return args.length > 1
-                ? ThreadType.VIRTUAL
+    private static ThreadType defineThreadType(final String arg){
+
+        return arg.equals(ThreadType.VIRTUAL.toString()) ?
+                ThreadType.VIRTUAL
                 : ThreadType.PLATFORM;
     }
 
@@ -72,9 +74,17 @@ public class NativeMemoryTracking
                 : Executors.newCachedThreadPool();
     }
 
-    private static int defineThreadCount(final String[] args){
-        return args.length > 0
-                ? Integer.parseInt(args[0])
-                : 4000;
+    private static int defineThreadCount(final String arg){
+
+        try {
+           return Integer.parseInt(arg);
+        }catch (NumberFormatException nfe){
+            throw new  RuntimeException("You must provide a valid and positive number to determine the number of threads to use!");
+
+        }
+    }
+
+    private static boolean defineUsedJcmd(final String arg){
+        return Boolean.valueOf(arg);
     }
 }
