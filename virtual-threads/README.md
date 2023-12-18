@@ -249,29 +249,30 @@ src/main/java/org/jugistanbul/virtualthread/monitor/MonitoringPinningEvent.java
 <details>
 <summary>org.jugistanbul.virtualthread.monitor.NativeMemoryTracking.java</summary>
 
-[This example](https://github.com/hakdogan/loom-examples/blob/main/virtual-threads/src/main/java/org/jugistanbul/virtualthread/monitor/NativeMemoryTracking.java) shows how the amount of memory allocated to threads(Platform and Virtual) can be observed using NMT.
+[This example](https://github.com/hakdogan/loom-examples/blob/main/virtual-threads/src/main/java/org/jugistanbul/virtualthread/monitor/NativeMemoryTracking.java) shows how the amount of memory allocated to threads(Platform and Virtual) can be observed with jcmd and JFR through NMT.
 
 ```java
-    ProcessHandle processHandle = ProcessHandle.current();
-    var pid = processHandle.pid();
+        var threadCount = defineThreadCount(args[0]);
+        var threadType  = defineThreadType(args[1]);
+        var jcmd        = args.length < 3 ? false : defineUsedJcmd(args[2]);
+        var printTime   = threadCount - 1;
 
-    var threadCount = defineThreadCount(args);
-    var threadType  = defineThreadType(args);
-    var printTime   = threadCount - 1;
+        System.out.println("Thread count set to " + threadCount);
 
-    System.out.println("Thread count set to " + threadCount);
+        try(var executor = defineExecutorService(threadType)){
 
-    try(var executor = defineExecutorService(threadType)){
+            IntStream.range(0, threadCount).forEach(i -> {
 
-        IntStream.range(0, threadCount).forEach(i -> {
+                if(jcmd && i == printTime){
+                    memoryTracking(pid, threadType);
+                }
 
-            if(i == printTime){
-                memoryTracking(pid, threadType);
-            }
-
-            executor.execute(() -> ThreadUtil.sleepOfSeconds(5));
-        });
-    }
+                executor.execute(() -> ThreadUtil.sleepOfSeconds(5));
+            });
+        }
+```
+```shell
+sh runNativeMemoryTracking.sh 12000 VIRTUAL false #don't use jcmd to access nmt
 ```
 </details>
 
