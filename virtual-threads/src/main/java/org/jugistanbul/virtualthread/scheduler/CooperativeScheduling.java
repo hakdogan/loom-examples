@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
  ***/
 public class CooperativeScheduling
 {
-    public static void main(String[] args) {
+    void main() {
 
         var threadList = IntStream.range(0, 10)
                 .mapToObj(i -> Thread.ofVirtual()

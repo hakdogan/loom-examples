@@ -15,7 +15,8 @@ import java.util.stream.IntStream;
  ***/
 public class CpuBounded
 {
-    public static void main(String[] args) {
+
+    void main() {
         executeTasksOnGivenExecutor(Executors.newCachedThreadPool());
         //executeTasksOnGivenExecutor(Executors.newVirtualThreadPerTaskExecutor());
     }
@@ -33,7 +34,7 @@ public class CpuBounded
                                 .mapToObj(BigInteger::valueOf)
                                 .reduce(BigInteger.ZERO, BigInteger::add);
 
-                        System.out.println(createTwoDigitId(index) + ";" + ThreadUtil.benchmark(start));
+                        System.out.println(STR."\{createTwoDigitId(index)};\{ThreadUtil.benchmark(start)}");
                     });
                 });
 
@@ -42,6 +43,6 @@ public class CpuBounded
 
     private static String createTwoDigitId(final int index){
         var id = String.valueOf(index);
-        return id.length() == 1 ? "0" + id : id;
+        return id.length() == 1 ? STR."0\{id}" : id;
     }
 }

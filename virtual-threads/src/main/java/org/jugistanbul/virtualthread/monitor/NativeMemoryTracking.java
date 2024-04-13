@@ -20,10 +20,10 @@ public class NativeMemoryTracking
 
         var threadCount = defineThreadCount(args[0]);
         var threadType  = defineThreadType(args[1]);
-        var jcmd        = args.length < 3 ? false : defineUsedJcmd(args[2]);
+        var jcmd        = args.length >= 3 && defineUsedJcmd(args[2]);
         var printTime   = threadCount - 1;
 
-        System.out.println("Thread count set to " + threadCount);
+        System.out.println(STR."Thread count set to \{threadCount}");
 
         try(var executor = defineExecutorService(threadType)){
 
@@ -42,7 +42,7 @@ public class NativeMemoryTracking
     private static void memoryTracking(final long pid, final ThreadType threadType) {
 
         var scale = ThreadType.PLATFORM.equals(threadType) ? "GB" : "MB";
-        var jcmd = String.format("jcmd %s VM.native_memory summary scale=%s", pid, scale);
+        var jcmd = STR."jcmd \{pid} VM.native_memory summary scale=\{scale}";
 
         Runtime rt = Runtime.getRuntime();
         String[] commands = {"/bin/sh", "-c", jcmd};
@@ -85,6 +85,6 @@ public class NativeMemoryTracking
     }
 
     private static boolean defineUsedJcmd(final String arg){
-        return Boolean.valueOf(arg);
+        return Boolean.parseBoolean(arg);
     }
 }

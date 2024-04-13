@@ -2,7 +2,7 @@
 
 Virtual threads are lightweight implementations of `java.lang.Thread` and they promise to write highly scalable concurrent applications. The main benefit of Virtual Threads is that you can stick to the familiar `thread-per-request programming model` without scaling problems.
 
-This module explains to you the basic behaviors and building blocks of Virtual Threads with some examples. 
+This module explains to you the basic behaviors and building blocks of Virtual Threads with some examples.
 
 ## Starting Virtual Thread
 
@@ -49,7 +49,7 @@ try(var executor = Executors.newVirtualThreadPerTaskExecutor()){
 [This example](https://github.com/hakdogan/loom-examples/blob/main/virtual-threads/src/main/java/org/jugistanbul/virtualthread/factory/StartVirtualThread.java) shows how to use the new `startVirtualThread` factory method to start a Virtual Thread.
 
 ```java
-Thread.startVirtualThread(() -> System.out.printf("Hello from Virtual Thread"));
+Thread.startVirtualThread(() -> System.out.println("Hello from Virtual Thread"));
 ```
 </details>
 
@@ -59,7 +59,7 @@ Thread.startVirtualThread(() -> System.out.printf("Hello from Virtual Thread"));
 [This example](https://github.com/hakdogan/loom-examples/blob/main/virtual-threads/src/main/java/org/jugistanbul/virtualthread/builder/Unstarted.java) shows how to create a Virtual Thread that will not be started until the `start()` method is invoked with the new `Builder API`.
 
 ```java
-Thread.ofVirtual().unstarted(() -> System.out.printf("Hello from postponed Virtual Thread"));
+Thread.ofVirtual().unstarted(() -> System.out.println("Hello from postponed Virtual Thread"));
 ```
 </details>
 
@@ -111,6 +111,11 @@ In `Project Loom`, a `continuation` is an object that may suspend or yield execu
 
         continuation.run();
 ```
+
+```shell
+java --add-exports java.base/jdk.internal.vm=ALL-UNNAMED \
+src/main/java/org/jugistanbul/virtualthread/continuation/YieldExecution.java
+```
 </details>
 
 <details>
@@ -141,7 +146,7 @@ In `Project Loom`, a `continuation` is an object that may suspend or yield execu
 
 ## Thread Pinning
 
-There are two cases where a blocking operation doesn't `unmount` the virtual thread from the `carrier thread`: 
+There are two cases where a blocking operation doesn't `unmount` the virtual thread from the `carrier thread`:
 
 1) When the virtual thread executes a `synchronized` block or method code
 2) When it calls a `native method` or a `foreign function`
@@ -213,7 +218,7 @@ In addition to existing ones, there are several new runtime parameters and event
 ```java
     var threadList = IntStream
         .range(0, 100_000)
-        .mapToObj(i -> Thread.ofVirtual().unstarted(() -> {
+        .mapToObj(_ -> Thread.ofVirtual().unstarted(() -> {
 
             var poolName = getPoolName();
             poolNames.add(poolName);
@@ -227,10 +232,10 @@ In addition to existing ones, there are several new runtime parameters and event
         threadList.forEach(Thread::start);
         ThreadUtil.joinAll(threadList);
 
-        System.out.println("Execution time:  " + ThreadUtil.benchmark(start) + " ms");
-        System.out.println("Core             " + Runtime.getRuntime().availableProcessors());
-        System.out.println("Pools            " + poolNames.size());
-        System.out.println("Platform threads " + pThreadNames.size());
+        System.out.println(STR."Execution time:  \{ThreadUtil.benchmark(start)} ms");
+        System.out.println(STR."Core             \{Runtime.getRuntime().availableProcessors()}");
+        System.out.println(STR."Pools            \{poolNames.size()}");
+        System.out.println(STR."Platform threads \{pThreadNames.size()}");
 ```
 </details>
 
@@ -240,7 +245,8 @@ In addition to existing ones, there are several new runtime parameters and event
 [This example](https://github.com/hakdogan/loom-examples/blob/main/virtual-threads/src/main/java/org/jugistanbul/virtualthread/monitor/MonitoringPinningEvent.java)  shows how to monitor the `pinning event` using `jdk.tracePinnedThreads` flag.
 
 ```shell
-java -cp ../util/target/classes/ \
+java --enable-preview --source 22 \
+-cp ../util/target/classes/ \
 -Djdk.tracePinnedThreads=short \
 src/main/java/org/jugistanbul/virtualthread/monitor/MonitoringPinningEvent.java
 ```
@@ -254,10 +260,10 @@ src/main/java/org/jugistanbul/virtualthread/monitor/MonitoringPinningEvent.java
 ```java
         var threadCount = defineThreadCount(args[0]);
         var threadType  = defineThreadType(args[1]);
-        var jcmd        = args.length < 3 ? false : defineUsedJcmd(args[2]);
+        var jcmd        = args.length >= 3 && defineUsedJcmd(args[2]);
         var printTime   = threadCount - 1;
 
-        System.out.println("Thread count set to " + threadCount);
+        System.out.println(STR."Thread count set to \{threadCount}");
 
         try(var executor = defineExecutorService(threadType)){
 
@@ -279,14 +285,15 @@ sh runNativeMemoryTracking.sh 12000 VIRTUAL false #don't use jcmd to access nmt
 <details>
 <summary>org.jugistanbul.virtualthread.scheduler.CooperativeScheduling.java</summary>
 
-[This example](https://github.com/hakdogan/loom-examples/blob/main/virtual-threads/src/main/java/org/jugistanbul/virtualthread/scheduler/CooperativeScheduling.java) shows the way to observe scheduler behavior with runtime parameters such as 
+[This example](https://github.com/hakdogan/loom-examples/blob/main/virtual-threads/src/main/java/org/jugistanbul/virtualthread/scheduler/CooperativeScheduling.java) shows the way to observe scheduler behavior with runtime parameters such as
 
 - jdk.virtualThreadScheduler.parallelism
 - jdk.virtualThreadScheduler.maxPoolSize
 - jdk.virtualThreadScheduler.minRunnable
 
 ```shell
-java -cp ../util/target/classes/ \
+java --enable-preview --source 22 \
+-cp ../util/target/classes/ \
 -Djdk.virtualThreadScheduler.parallelism=1 \
 -Djdk.virtualThreadScheduler.maxPoolSize=1 \
 -Djdk.virtualThreadScheduler.minRunnable=1 \
@@ -309,15 +316,15 @@ Virtual Threads offer a scalability benefit for `IO-bound` workloads, but relati
         .rangeClosed(1, 64)
         .forEach(index -> {
 
-            Instant start = Instant.now();
+Instant start = Instant.now();
             executor.submit(() -> {
-                IntStream
-                    .range(0, 50_000_000)
+        IntStream
+        .range(0, 50_000_000)
                     .mapToObj(BigInteger::valueOf)
                     .reduce(BigInteger.ZERO, BigInteger::add);
 
-                System.out.println(createTwoDigitId(index) + ";" + ThreadUtil.benchmark(start));
-            });
+                System.out.println(STR."\{createTwoDigitId(index)};\{ThreadUtil.benchmark(start)}");
+        });
         });
 
         ThreadUtil.shutdownAndAwaitTermination(executor, TimeUnit.HOURS);

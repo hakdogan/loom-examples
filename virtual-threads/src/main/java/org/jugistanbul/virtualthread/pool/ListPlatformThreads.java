@@ -15,16 +15,16 @@ import java.util.stream.IntStream;
  ***/
 public class ListPlatformThreads
 {
-    private static final Pattern WORKER_PATTERN = Pattern.compile("worker-+[0-9]");
-    private static final Pattern POOL_PATTERN = Pattern.compile("@ForkJoinPool-+[0-9]");
+    private static final Pattern WORKER_PATTERN = Pattern.compile("worker-+\\d");
+    private static final Pattern POOL_PATTERN = Pattern.compile("@ForkJoinPool-+\\d");
     private static final Set<String> poolNames = ConcurrentHashMap.newKeySet();
     private static final Set<String> pThreadNames = ConcurrentHashMap.newKeySet();
 
-    public static void main(String[] args) {
+    void main() {
 
         var threadList = IntStream
-                .range(0, 100_000)
-                .mapToObj(i -> Thread.ofVirtual().unstarted(() -> {
+                .range(0, 1_000_000)
+                .mapToObj(_ -> Thread.ofVirtual().unstarted(() -> {
 
                     var poolName = getPoolName();
                     poolNames.add(poolName);
@@ -38,10 +38,10 @@ public class ListPlatformThreads
         threadList.forEach(Thread::start);
         ThreadUtil.joinAll(threadList);
 
-        System.out.println("Execution time:  " + ThreadUtil.benchmark(start) + " ms");
-        System.out.println("Core             " + Runtime.getRuntime().availableProcessors());
-        System.out.println("Pools            " + poolNames.size());
-        System.out.println("Platform threads " + pThreadNames.size());
+        System.out.println(STR."Execution time:  \{ThreadUtil.benchmark(start)} ms");
+        System.out.println(STR."Core             \{Runtime.getRuntime().availableProcessors()}");
+        System.out.println(STR."Pools            \{poolNames.size()}");
+        System.out.println(STR."Platform threads \{pThreadNames.size()}");
     }
 
     private static String getWorkerName(){

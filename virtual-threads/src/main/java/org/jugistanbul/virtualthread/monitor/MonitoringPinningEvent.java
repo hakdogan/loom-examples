@@ -10,7 +10,7 @@ public class MonitoringPinningEvent
 {
     private static final Object lock = new Object();
 
-    public static void main(String[] args) {
+    void main() {
 
         var thread = Thread.ofVirtual().unstarted(() -> {
             //To see the pinning event, execute this class with runMonitoringPinningEvent.sh file

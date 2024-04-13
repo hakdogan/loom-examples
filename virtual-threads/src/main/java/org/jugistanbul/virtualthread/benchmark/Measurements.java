@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 public class Measurements
 {
 
-    public static void main(String[] args) {
+    void main() {
 
         var platformThreadExecutor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         var virtualThreadExecutor = Executors.newVirtualThreadPerTaskExecutor();
@@ -28,12 +28,10 @@ public class Measurements
 
         var startTime = Instant.now();
         IntStream.range(0, 1000)
-                .mapToObj(i -> {
-                    Runnable runnable = () -> ThreadUtil.sleepOfMillis(50);
-                    return runnable;
-                }).map(executor::submit).toList();
+                .mapToObj(_ -> (Runnable) () -> ThreadUtil.sleepOfMillis(50))
+                .forEach(executor::submit);
 
         ThreadUtil.wait(executor);
-        System.out.println(String.format("Completion time of %s %s ms", type.getDesc(), ThreadUtil.benchmark(startTime)));
+        System.out.printf("Completion time of %s %s ms%n", type.getDesc(), ThreadUtil.benchmark(startTime));
     }
 }

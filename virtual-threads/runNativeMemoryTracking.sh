@@ -7,7 +7,8 @@ threadCount=${1:-1}
 threadType=${2:-'PLATFORM'}
 jcmd=${3:-'false'}
 
-java -cp ../util/target/classes/ -XX:NativeMemoryTracking=detail \
+java --enable-preview --source 22 \
+-cp ../util/target/classes/ -XX:NativeMemoryTracking=detail \
 -XX:StartFlightRecording=name=Profiling,filename=nmtRecording.jfr,settings=profile \
 src/main/java/org/jugistanbul/virtualthread/monitor/NativeMemoryTracking.java \
 $threadCount $threadType $jcmd

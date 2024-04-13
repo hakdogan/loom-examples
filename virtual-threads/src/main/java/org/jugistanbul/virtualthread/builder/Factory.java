@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
  ***/
 public class Factory
 {
-    public static void main(String[] args) {
+    void main() {
 
         var virtualThreadFactory = Thread.ofVirtual().factory();
         var platformThreadFactory = Thread.ofPlatform().factory();
@@ -37,7 +37,7 @@ public class Factory
             IntStream.rangeClosed(0, 4).forEach(i ->
                     executor.submit(() -> {
                         Thread.sleep(Duration.ofSeconds(1));
-                        System.out.println("Is virtual: " + Thread.currentThread().isVirtual());
+                        System.out.println(STR."Is virtual: \{Thread.currentThread().isVirtual()}");
                         return i;
                     }));
         }

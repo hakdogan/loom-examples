@@ -8,8 +8,8 @@ import org.jugistanbul.util.ThreadUtil;
  ***/
 public class Unstarted
 {
-    public static void main(String[] args) {
-        var unstartedThread = Thread.ofVirtual().unstarted(() -> System.out.printf("Hello from postponed Virtual Thread"));
+    void main() {
+        var unstartedThread = Thread.ofVirtual().unstarted(() -> System.out.println("Hello from postponed Virtual Thread"));
         unstartedThread.start();
         ThreadUtil.join(unstartedThread);
     }

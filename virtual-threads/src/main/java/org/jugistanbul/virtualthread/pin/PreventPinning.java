@@ -13,7 +13,7 @@ public class PreventPinning
 {
     private static final ReentrantLock lock = new ReentrantLock();
 
-    public static void main(String[] args) {
+    void main() {
 
         var threadList = IntStream.range(0, 10)
                 .mapToObj(i -> Thread.ofVirtual().unstarted(() -> {

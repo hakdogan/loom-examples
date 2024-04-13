@@ -10,15 +10,15 @@ import java.util.stream.IntStream;
  ***/
 public class VirtualThreadPerTask
 {
-    public static void main(String[] args) {
+    void main() {
 
         try(var executor = Executors.newVirtualThreadPerTaskExecutor()){
-            IntStream.range(0, 100_000).forEach(i -> {
+            IntStream.range(0, 100_000).forEach(i ->
                 executor.submit(() -> {
                     Thread.sleep(Duration.ofSeconds(1));
                     return i;
-                });
-            });
+                })
+            );
         }
     }
 }

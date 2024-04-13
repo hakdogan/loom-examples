@@ -8,8 +8,8 @@ import org.jugistanbul.util.ThreadUtil;
  ***/
 public class StartVirtualThread
 {
-    public static void main(String[] args) {
-        var thread = Thread.startVirtualThread(() -> System.out.printf("Hello from Virtual Thread"));
+    void main() {
+        var thread = Thread.startVirtualThread(() -> System.out.println("Hello from Virtual Thread"));
         ThreadUtil.join(thread);
     }
 }
