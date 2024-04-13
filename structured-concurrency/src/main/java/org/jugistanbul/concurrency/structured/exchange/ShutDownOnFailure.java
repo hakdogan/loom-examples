@@ -15,7 +15,7 @@ import static java.util.concurrent.StructuredTaskScope.Subtask;
  ***/
 public class ShutDownOnFailure
 {
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
+    void main() throws InterruptedException, ExecutionException {
 
         try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
 

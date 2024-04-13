@@ -1,6 +1,7 @@
 package org.jugistanbul.concurrency.structured;
 
 import org.jugistanbul.ErrorSimulator;
+import org.jugistanbul.exeption.CustomException;
 
 import java.io.*;
 import java.net.Socket;
@@ -19,6 +20,7 @@ public class RequestHandler
 {
 
     private final Socket clientSocket;
+    private Random random = new Random();
 
     public RequestHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -35,9 +37,10 @@ public class RequestHandler
             createResponse(username.get(), userIdentity.get());
 
         } catch (InterruptedException interruptedException){
+            System.out.println("gitti....");
             Thread.currentThread().interrupt();
         } catch (ExecutionException executionException){
-            throw new RuntimeException(executionException.getMessage());
+            throw new CustomException(executionException.getMessage());
         }
     }
 
@@ -47,7 +50,6 @@ public class RequestHandler
         System.out.println("The remote service call will be performed to fetch a username randomly");
 
         String[] nicknames = {"hakdogan", "jugistanbul", "JakartaOneTUR"};
-        Random random = new Random();
         int randomIndex = random.nextInt(nicknames.length);
 
         return nicknames[randomIndex];
@@ -65,7 +67,7 @@ public class RequestHandler
              var out = new PrintStream(clientSocket.getOutputStream(), true)){
 
             var response =
-                    String.format("HTTP/1.1 200 OK\r\n\r\nUsername: %s Identity: %d\r\n", username, userIdentity);
+                    String.format("HTTP/1.1 200 OK\r%n\r%nUsername: %s Identity: %d\r%n", username, userIdentity);
 
             out.write(response.getBytes());
             String line = in.readLine();
@@ -79,7 +81,7 @@ public class RequestHandler
             out.println();
 
         } catch (Exception ex){
-            throw new RuntimeException(ex);
+            throw new CustomException(ex.getMessage());
         }
     }
 }

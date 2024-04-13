@@ -8,7 +8,7 @@ import org.jugistanbul.util.ThreadUtil;
  ***/
 public class RequestProcessing
 {
-    public static void main(String[] args) {
+    void main() {
 
         var serverThread = Thread.ofVirtual().unstarted(Server::run);
         serverThread.start();

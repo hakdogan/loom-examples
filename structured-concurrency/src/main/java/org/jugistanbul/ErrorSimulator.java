@@ -1,5 +1,7 @@
 package org.jugistanbul;
 
+import org.jugistanbul.exeption.CustomException;
+
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +16,7 @@ public class ErrorSimulator
     static void throwRandomly(final int threshold){
         var randomValue = ThreadLocalRandom.current().nextInt(100, 100_000);
         if(randomValue >= threshold){
-            throw new RuntimeException("There's something wrong");
+            throw new CustomException("There's something wrong");
         }
     }
 

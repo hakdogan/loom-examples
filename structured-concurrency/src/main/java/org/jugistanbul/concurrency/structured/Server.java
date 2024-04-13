@@ -1,5 +1,7 @@
 package org.jugistanbul.concurrency.structured;
 
+import org.jugistanbul.exeption.CustomException;
+
 import java.net.ServerSocket;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,7 +30,7 @@ public class Server
                 }
             }
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new CustomException(ex.getMessage());
         }
     }
 }

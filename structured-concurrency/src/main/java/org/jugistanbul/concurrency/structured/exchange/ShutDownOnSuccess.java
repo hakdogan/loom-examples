@@ -3,7 +3,6 @@ package org.jugistanbul.concurrency.structured.exchange;
 import org.jugistanbul.concurrency.ExchangeReader;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.StructuredTaskScope;
 
@@ -13,7 +12,7 @@ import java.util.concurrent.StructuredTaskScope;
  ***/
 public class ShutDownOnSuccess
 {
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
+    void main() throws InterruptedException, ExecutionException {
 
         try (var scope = new StructuredTaskScope.ShutdownOnSuccess<>()) {
 
@@ -22,8 +21,8 @@ public class ShutDownOnSuccess
 
             scope.join();
 
-            System.out.println("USD process state  : " + usd.state());
-            System.out.println("EURO process state : " + euro.state());
+            System.out.println(STR."USD process state  : \{usd.state()}");
+            System.out.println(STR."EURO process state :  \{euro.state()}");
 
             System.out.println(scope.result());
         }
