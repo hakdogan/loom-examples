@@ -2,7 +2,7 @@
 
 Virtual threads are lightweight implementations of `java.lang.Thread` and they promise to write highly scalable concurrent applications. The main benefit of Virtual Threads is that you can stick to the familiar `thread-per-request programming model` without scaling problems.
 
-This module explains to you the basic behaviors and building blocks of Virtual Threads with some examples.
+This module elucidates the fundamental principles and components of Virtual Threads through illustrative examples.
 
 ## Starting Virtual Thread
 
