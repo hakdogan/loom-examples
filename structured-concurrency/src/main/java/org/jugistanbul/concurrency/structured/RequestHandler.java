@@ -37,7 +37,6 @@ public class RequestHandler
             createResponse(username.get(), userIdentity.get());
 
         } catch (InterruptedException interruptedException){
-            System.out.println("gitti....");
             Thread.currentThread().interrupt();
         } catch (ExecutionException executionException){
             throw new CustomException(executionException.getMessage());

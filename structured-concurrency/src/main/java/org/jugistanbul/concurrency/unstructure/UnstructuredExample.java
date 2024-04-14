@@ -17,7 +17,7 @@ public class UnstructuredExample
         return thread;
     });
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    void main() throws ExecutionException, InterruptedException {
 
         Future<BigDecimal> usdExchangeRate = executor.submit(ExchangeReader::fetchUsdExchangeRate);
         Future<BigDecimal> euroExchangeRate = executor.submit(ExchangeReader::fetchEuroExchangeRate);
