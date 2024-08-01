@@ -23,6 +23,7 @@
         <module>virtual-threads</module>
         <module>util</module>
         <module>structured-concurrency</module>
+        <module>scoped-values</module>
     </modules>
 
     <properties>
