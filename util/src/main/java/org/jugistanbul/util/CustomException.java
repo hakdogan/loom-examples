@@ -1,4 +1,4 @@
-package org.jugistanbul.exeption;
+package org.jugistanbul.util;
 
 /**
  * @author hakdogan hakdogan (huseyin.akdogan@patikaglobal.com)

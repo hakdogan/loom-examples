@@ -1,7 +1,7 @@
 package org.jugistanbul.concurrency.structured;
 
 import org.jugistanbul.ErrorSimulator;
-import org.jugistanbul.exeption.CustomException;
+import org.jugistanbul.util.CustomException;
 
 import java.io.*;
 import java.net.Socket;
@@ -63,7 +63,7 @@ public class RequestHandler
     private void createResponse(final String username, final int userIdentity){
 
         try (var in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()));
-             var out = new PrintStream(clientSocket.getOutputStream(), true)){
+             var out = clientSocket.getOutputStream()){
 
             var response =
                     String.format("HTTP/1.1 200 OK\r%n\r%nUsername: %s Identity: %d\r%n", username, userIdentity);
@@ -73,11 +73,11 @@ public class RequestHandler
 
             while( line != null && !line.isEmpty()){
                 out.write(line.getBytes());
-                out.println();
+                out.write("\r\n".getBytes());
                 line = in.readLine();
             }
 
-            out.println();
+            out.write("\r\n".getBytes());
 
         } catch (Exception ex){
             throw new CustomException(ex.getMessage());

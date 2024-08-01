@@ -1,6 +1,6 @@
 package org.jugistanbul;
 
-import org.jugistanbul.exeption.CustomException;
+import org.jugistanbul.util.CustomException;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;

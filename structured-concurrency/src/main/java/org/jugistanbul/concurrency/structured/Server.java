@@ -1,6 +1,6 @@
 package org.jugistanbul.concurrency.structured;
 
-import org.jugistanbul.exeption.CustomException;
+import org.jugistanbul.util.CustomException;
 
 import java.net.ServerSocket;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,6 +23,8 @@ public class Server
                 try (var clientSocket = socket.accept()) {
                     var requestHandler = new RequestHandler(clientSocket);
                     requestHandler.handle();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
 
                 if(REQUEST_COUNT.incrementAndGet() == MAX_REQUEST){
