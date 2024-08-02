@@ -1,19 +1,24 @@
 # Scoped Values
 
-The Scoped Values API allows us to store and share immutable data for a bounded lifetime and only the thread that wrote the data can read it.
+The Scoped Values API allows us to store and share immutable data for a bounded lifetime. The example in this module shows this facility with a concrete example.
 
-The example in this module shows this facility with a concrete example.
+<details>
+<summary>org.jugistanbul.handler.RequestHandler.java</summary>
+
+[This example](https://github.com/hakdogan/loom-examples/blob/main/scoped-values/src/main/java/org/jugistanbul/handler/RequestHandler.java) shows how to share immutable data safely and efficiently for a bounded lifetime by using one-way data transfer between components.
 
 ```java
+//RequestHandler.java
 ScopedValue.where(PRINCIPAL, authority).run(() -> {
     var access = Database.access();
-    var msg = access ? "HTTP/1.1 200 OK\r\n" : "HTTP/1.1 401 Unauthorized Access\r\n";
-    response
-            .append(msg)
-            .append("Content-Type: text/plain\r\n\n")
-            .append("Permission: ")
-            .append(access);
+    ...
 });
+
+//Database.java
+public static boolean access(){
+    var authority = PRINCIPAL.get();
+    return "admin".equals(authority.username());
+}
 ```
 
 ```shell
@@ -24,3 +29,4 @@ Content-Type: text/plain
 
 Permission: true
 ```
+</details>
